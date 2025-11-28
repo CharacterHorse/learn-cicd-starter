@@ -30,7 +30,7 @@ func TestGetAPIKey(t *testing.T) {
 			},
 			want:    "",
 			wantErr: true,
-			err:     auth.MalformedAuthHearder,
+			err:     auth.ErrMalformedAuthHeader,
 		},
 		{
 			name: "Malformed Authorization header - wrong scheme",
@@ -39,7 +39,7 @@ func TestGetAPIKey(t *testing.T) {
 			},
 			want:    "",
 			wantErr: true,
-			err:     auth.MalformedAuthHearder,
+			err:     auth.ErrMalformedAuthHeader,
 		},
 		{
 			name: "Valid Authorization header",
@@ -66,7 +66,7 @@ func TestGetAPIKey(t *testing.T) {
 			},
 			want:    "",
 			wantErr: true,
-			err:     auth.MalformedAuthHearder,
+			err:     auth.ErrMalformedAuthHeader,
 		},
 		{
 			name: "Valid Authorization header with empty key",
