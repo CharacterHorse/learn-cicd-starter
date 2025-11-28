@@ -1,7 +1,6 @@
 package auth_test
 
 import (
-	"errors"
 	"net/http"
 	"testing"
 
@@ -31,7 +30,7 @@ func TestGetAPIKey(t *testing.T) {
 			},
 			want:    "",
 			wantErr: true,
-			err:     errors.New("malformed authorization header"),
+			err:     auth.MalformedAuthHearder,
 		},
 		{
 			name: "Malformed Authorization header - wrong scheme",
@@ -40,7 +39,7 @@ func TestGetAPIKey(t *testing.T) {
 			},
 			want:    "",
 			wantErr: true,
-			err:     errors.New("malformed authorization header"),
+			err:     auth.MalformedAuthHearder,
 		},
 		{
 			name: "Valid Authorization header",
@@ -48,6 +47,33 @@ func TestGetAPIKey(t *testing.T) {
 				"Authorization": []string{"ApiKey 12345"},
 			},
 			want:    "12345",
+			wantErr: false,
+			err:     nil,
+		},
+		{
+			name: "Valid Authorization header with extra spaces",
+			headers: http.Header{
+				"Authorization": []string{"ApiKey  12345"},
+			},
+			want:    "",
+			wantErr: false,
+			err:     nil,
+		},
+		{
+			name: "Malformed Authorization header - wrong case",
+			headers: http.Header{
+				"Authorization": []string{"apikey 12345"},
+			},
+			want:    "",
+			wantErr: true,
+			err:     auth.MalformedAuthHearder,
+		},
+		{
+			name: "Valid Authorization header with empty key",
+			headers: http.Header{
+				"Authorization": []string{"ApiKey "},
+			},
+			want:    "",
 			wantErr: false,
 			err:     nil,
 		},
