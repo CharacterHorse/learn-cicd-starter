@@ -44,3 +44,8 @@ jobs:
         uses: dominikh/staticcheck-action@v1
         with:
           version: "latest"
+      - name: Gosec Install
+        run: go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+      - name: Gosec check
+        run: gosec ./...
