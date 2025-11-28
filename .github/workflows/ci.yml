@@ -40,12 +40,12 @@ jobs:
       - name: Check formatting
         run: test -z $(go fmt ./...)
 
-      - name: Static Check
+      - name: static check
         uses: dominikh/staticcheck-action@v1
         with:
           version: "latest"
-      - name: Gosec Install
+      - name: gosec Install
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
-      - name: Gosec check
+      - name: gosec check
         run: gosec ./...
