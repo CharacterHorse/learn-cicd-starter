@@ -21,3 +21,20 @@ jobs:
 
       - name: Build executable
         run: ./scripts/buildprod.sh
+
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Use gcloud CLI
+        run: gcloud info
+
+      - name: Push Artifact
+        run: gcloud builds submit --tag us-central1-docker.pkg.dev/inner-cinema-479713-r0/notely-ar-repo/notely:latest .
+
+      - name: Deploy
+        run: gcloud run deploy notely --image us-central1-docker.pkg.dev/inner-cinema-479713-r0/notely-ar-repo/notely:latest --region us-central1 --allow-unauthenticated --project inner-cinema-479713-r0 --max-instances 2
